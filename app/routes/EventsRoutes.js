@@ -8,7 +8,7 @@ module.exports = () => {
 
     router.post('/add', EventsControllers.create)
 
-    router.delete('/delate/:id', EventsControllers.delete)
+    router.delete('/delete/:id', EventsControllers.delete)
 
     return router
 }
