@@ -1,9 +1,10 @@
 import axios from 'axios'
+import config from '../config'
 import { useState } from 'react'
 import Select from './Select'
 import './Form.css'
 
-const Form = () => {
+const Form = (props) => {
     const [name, setName] = useState('')
     const [event, setEvent] = useState({ key: '', val: '' })
     const [city, setCity] = useState({ key: '', val: '' })
@@ -26,7 +27,14 @@ const Form = () => {
     ]
 
     const saveEvent = (eventObj) => {
-        console.log('saveEvent')
+        axios
+            .post(config.api.url + '/events/add', eventObj, { mode: 'cors' })
+            .then((res) => {
+                props.getEvents()
+            })
+            .catch((err) => {
+                console.error(err)
+            })
     }
 
     const resetForm = () => {
@@ -42,14 +50,27 @@ const Form = () => {
         if (name.trim() === '') {
             errorsValidate.push('Wpisz Imie i Nazwisko')
         }
+        if (event.key.trim() === '') {
+            errorsValidate.push('Wybierz Szkolenie')
+        }
+        if (city.key.trim() === '') {
+            errorsValidate.push('Wybierz Miasto')
+        }
         if (errorsValidate.length > 0) {
             setErrors(
                 errorsValidate.map((errorText, index) => {
                     return <li key={index}>{errorText}</li>
                 })
             )
+            return false
         }
-        saveEvent()
+
+        const newEvent = {
+            name: name,
+            event: event,
+            city: city
+        }
+        saveEvent(newEvent)
         resetForm()
     }
 
@@ -91,13 +112,13 @@ const Form = () => {
                     <label htmlFor="city">Miasto</label>
                     <Select
                         values={choicesCities}
-                        selectedValue={event.key}
+                        selectedValue={city.key}
                         onValueChange={handleChangeCity}
                         id='city'
                     />
                 </div>
                 <div className="wrapper">
-                    <button type="submit">Zapisz na szkolenie </button>
+                    <button type="submit" className='submit'>Zapisz na szkolenie </button>
                 </div>
             </form>
             <div className="errorsWrapper">
