@@ -24,20 +24,20 @@ function App() {
       })
   }
 
-  //const deleteEvent = (rowId) => {
-  //  if (window.confirm('Usunac zapis na szkolenie?')) {
-   //   axios
-    //    .delete(config.api.url + '/events/delete/' + rowId)ç
-    //      .then((res) => {
-    //        if (res.data.deleted) {
-    //          getEvents()
-    //        }
-    //      })
-     //     .catch((err) => {
-      //      console.error(err)
-    //      })
-  //  }
- // }
+  const deleteEvent = (rowId) => {
+    if (window.confirm('Usunac zapis na szkolenie?')) {
+      axios
+        .delete(config.api.url + '/events/delete/' + rowId)
+        .then((res) => {
+          if (res.data.deleted) {
+            getEvents()
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+  }
 
   return (
     <div className="App">
